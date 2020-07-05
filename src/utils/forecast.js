@@ -17,15 +17,15 @@ const request = require('postman-request')
 // })
 
 function forecast(lat, long, callback){
-    const url = `http://api.weatherstack.com/current?access_key=3edc013571443a1737e972b0cd27d683&query=${lat},${long}&units=f`
-    request({url, json:true}, (error, {body:{error:errorMsg, current:{weather_descriptions, temperature, feelslike} = {}} = {}} = {}) => {
+    const url = `http://api.weatherstack.com/current?access_key=3edc013571443a1737e972b0cd27d683&query=${lat},${long}&units=m`
+    request({url, json:true}, (error, {body:{error:errorMsg, current:{weather_descriptions, temperature, feelslike, humidity} = {}} = {}} = {}) => {
         if (error){
             callback('Cant connect to weather service')
         } else if (errorMsg) {
             callback(`Error: ${errorMsg.info}`)
         } else {
             console.log(url)
-            callback(undefined, `${(weather_descriptions.length === 0) ? "No weather description" : weather_descriptions[0]}. It is currently ${temperature} deg out, and it feels like ${feelslike} deg out.`)
+            callback(undefined, `${(weather_descriptions.length === 0) ? "No weather description" : weather_descriptions[0]}. It is currently ${temperature} deg out, and it feels like ${feelslike} deg out. The humidity is ${humidity}%`)
         }
     })
 }
